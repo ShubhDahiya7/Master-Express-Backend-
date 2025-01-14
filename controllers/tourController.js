@@ -3,6 +3,22 @@ const fs = require('fs');
 // Load and parse the tours data
 const tours = JSON.parse(fs.readFileSync('./dev-data/data/tours-simple.json'));
 
+// param middleware - A middleware that runs only if certain parameter like id is included in the api endpt
+// while make a req to the server.
+// takes 4 args : where val is the value of that parameter
+
+exports.checkID = (req, res, next, val) => {
+  console.log(`tour id is: ${val}`);
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'invalid id',
+    });
+  }
+  // next() middleware is called only if the id exist otherwise we return from above directly by sending a 404 response.
+  next();
+};
+
 // Route handler for getting all tours
 exports.getAllTours = (req, res) => {
   res.status(200).json({
@@ -40,4 +56,16 @@ exports.createTour = (req, res) => {
       });
     }
   );
+};
+
+// Route handler for getting a single tour by ID
+exports.getTour = (req, res) => {
+  // Convert ID from string to number
+  const id = req.params.id * 1;
+  const tour = tours.find((tour) => tour.id === id);
+  req.tour = tour; // Attach the found tour to the request object
+  res.status(200).json({
+    status: 'success',
+    data: { tour: req.tour },
+  });
 };
