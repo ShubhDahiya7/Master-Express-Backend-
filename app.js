@@ -53,7 +53,19 @@ const tours = JSON.parse(fs.readFileSync('./dev-data/data/tours-simple.json'));
 // API routes from other types of routes, such as those serving static files
 // v1 is the version no of api, we can make multiple versions of a api at a time.
 
-app.get('/api/v1/tours', (req, res) => {
+// Mounting - lets use unique router for specific kinda of routes
+
+const tourRouter = express.Router();
+const userRouter = express.Router();
+
+// Flow:
+// A GET request is made to /api/v1/tours/.
+// The Express app recognizes that /api/v1/tours/ should be handled by tourRouter.
+// tourRouter checks its routes and finds tourRouter.get('/'), matching the path.
+// The corresponding handler function is executed, sending a JSON response with the tour data.
+// now instead of using app for routing we can use tourRouter for handling 1 kinda of routes.
+
+tourRouter.get('/', (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -61,7 +73,7 @@ app.get('/api/v1/tours', (req, res) => {
   });
 });
 
-app.post('/api/v1/tours', (req, res) => {
+tourRouter.post('/', (req, res) => {
   console.log(req.body);
 
   const newId = tours[tours.length - 1].id + 1;
@@ -83,14 +95,14 @@ app.post('/api/v1/tours', (req, res) => {
 });
 
 // user related routes
-app.get('/api/v1/users', (req, res) => {
+userRouter.get('/', (req, res) => {
   res.status(500).json({
     status: 'error',
     message: 'this is not defined yet',
   });
 });
 
-app.post('/api/v1/users', (req, res) => {
+userRouter.post('/', (req, res) => {
   res.status(500).json({
     status: 'error',
     message: 'this is not defined yet',
@@ -98,26 +110,29 @@ app.post('/api/v1/users', (req, res) => {
 });
 
 // users with specific id
-app.get('/api/v1/users/:id', (req, res) => {
+userRouter.get('/:id', (req, res) => {
   res.status(500).json({
     status: 'error',
     message: 'this is not defined yet',
   });
 });
 
-app.patch('/api/v1/users/:id', (req, res) => {
+userRouter.patch('/:id', (req, res) => {
   res.status(500).json({
     status: 'error',
     message: 'this is not defined yet',
   });
 });
 
-app.delete('/api/v1/users/:id', (req, res) => {
+userRouter.delete('/:id', (req, res) => {
   res.status(500).json({
     status: 'error',
     message: 'this is not defined yet',
   });
 });
+
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
 
 // Listen to incoming req on this port no
 app.listen(port, () => {
