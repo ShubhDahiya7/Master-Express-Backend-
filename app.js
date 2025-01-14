@@ -2,12 +2,18 @@ const express = require('express');
 const fs = require('fs');
 const { json } = require('stream/consumers');
 const app = express();
+const morgan = require('morgan');
 
 const port = 3000;
 
 // middleware - it comes b/w req and res, something through which our req's
 // goes through.
 app.use(express.json());
+
+// 3rd party middleware called morgan
+// It is often used with Express to log details about incoming requests to the server,
+// which can be useful for debugging and monitoring purposes
+app.use(morgan('dev'));
 
 // creating our own middleware- All middlewares are defined in the req-res cycle only if they are defined
 // before the res is send back to the client.
@@ -74,6 +80,43 @@ app.post('/api/v1/tours', (req, res) => {
       });
     }
   );
+});
+
+// user related routes
+app.get('/api/v1/users', (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'this is not defined yet',
+  });
+});
+
+app.post('/api/v1/users', (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'this is not defined yet',
+  });
+});
+
+// users with specific id
+app.get('/api/v1/users/:id', (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'this is not defined yet',
+  });
+});
+
+app.patch('/api/v1/users/:id', (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'this is not defined yet',
+  });
+});
+
+app.delete('/api/v1/users/:id', (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'this is not defined yet',
+  });
 });
 
 // Listen to incoming req on this port no
