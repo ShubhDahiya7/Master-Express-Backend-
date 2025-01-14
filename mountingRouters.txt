@@ -1,0 +1,22 @@
+Few steps about the Flow of what happens when a req is made to a endpt, how the specific router middleware works.
+
+Route Setup: tourRouter is defined using express.Router(), and routes are assigned to it for handling requests to /api/v1/tours.
+
+Steps: 
+
+GET Request (/api/v1/tours):
+
+Client sends a GET request to /api/v1/tours.
+tourRouter.get('/') is triggered.
+It responds with a 200 status and a list of tours.
+
+POST Request (/api/v1/tours):
+
+Client sends a POST request with tour data to /api/v1/tours.
+tourRouter.post('/') is triggered.
+The new tour is added to the array, and the data is saved to tours-simple.json.
+It responds with a 201 status and the newly created tour.
+
+Export Router: tourRouter is exported to be used in the main Express app for routing.
+
+Integration in Main App: The tourRouter is mounted at /api/v1/tours using app.use('/api/v1/tours', tourRouter).
