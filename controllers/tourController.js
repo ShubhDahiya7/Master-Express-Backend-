@@ -19,6 +19,18 @@ exports.checkID = (req, res, next, val) => {
   next();
 };
 
+// Middleware before creating a new tour
+// To check if it contains tour name and price property.
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'name or price missing',
+    });
+  }
+  next();
+};
+
 // Route handler for getting all tours
 exports.getAllTours = (req, res) => {
   res.status(200).json({
