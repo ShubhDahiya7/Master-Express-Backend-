@@ -29,6 +29,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// serving static files: Now if we want to see files present in our public folder, they won't appear
+// if we give their url in browser, means client can't access it bcz there is no route defined for those url's.
+// But we can use a middleware to see those files content.
+// Not of much use but just a concept
+app.use(express.static('./public'));
+
 // if we need the the time at which the req is made
 // middlewares are always called in the series in which they are written in code top to btm.
 app.use((req, res, next) => {
