@@ -1,0 +1,6 @@
+# ignore environment files with sensitive info
+.env
+
+# no need to track node modules, can use npm i for that
+# Node.js dependencies
+node_modules/
