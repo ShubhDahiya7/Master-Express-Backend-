@@ -1,0 +1,13 @@
+A model only contians the business logic of the code.
+
+By business logic i means like:
+defining the schema of documents in the collection
+defining all validations like required or not etc.
+defining constraints etc.
+
+It doesn't deal with the req-res part of the api.
+That is for the controller.
+
+Now we will no longer need fs module, bcz we can 
+create new data and do operations on it ourselves.
+That read/writing file part is over.
