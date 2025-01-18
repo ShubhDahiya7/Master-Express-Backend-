@@ -1,14 +1,13 @@
 const TourModel = require('../models/tourModel');
 
-// Middleware before creating a new tour
-// To check if it contains tour name and price property.
-
 // Route handler for getting all tours
-exports.getAllTours = (req, res) => {
+exports.getAllTours = async (req, res) => {
+  const tours = await TourModel.find();
+
   res.status(200).json({
     status: 'success',
-    // results: tours.length,
-    // data: tours,
+    totalTours: tours.length,
+    data: tours,
   });
 };
 
@@ -25,6 +24,8 @@ exports.createTour = async (req, res) => {
     // in mongo db.
     const newTour = await TourModel.create(req.body);
 
+    // this res is for the client to see what happenend and also
+    // to comp req-res cycle.
     res.status(201).json({
       status: 'success',
       data: { tour: newTour },
@@ -32,19 +33,47 @@ exports.createTour = async (req, res) => {
   } catch {
     res.status(400).json({
       status: 'fail',
-      data: err,
+      data: 'invalid data sent',
     });
   }
 };
 
+// To update a tour selected by id
+exports.updateTour = async (req, res) => {
+  const updatedTour = await TourModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    message: 'updated',
+    data: updatedTour,
+  });
+};
+
+// To delete a tour by id
+exports.deleteTour = async (req, res) => {
+  // In rest API while deleting something we dont store the results in a var.
+  await TourModel.findByIdAndDelete(req.params.id);
+
+  res.status(204).json({
+    status: 'success',
+    message: 'deleted',
+    data: null,
+  });
+};
+
 // Route handler for getting a single tour by ID
-exports.getTour = (req, res) => {
-  // Convert ID from string to number
-  const id = req.params.id * 1;
-  // const tour = tours.find((tour) => tour.id === id);
-  // req.tour = tour; // Attach the found tour to the request object
-  // res.status(200).json({
-  //   status: 'success',
-  //   data: { tour: req.tour },
-  // });
+exports.getTour = async (req, res) => {
+  const tour = await TourModel.findById(req.params.id);
+
+  res.status(200).json({
+    status: 'success',
+    data: tour,
+  });
 };
