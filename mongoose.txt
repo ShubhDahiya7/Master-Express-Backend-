@@ -1,0 +1,9 @@
+When you compile a schema into a model, Mongoose does the following:
+
+1. Associates the Schema with a Collection: The model links the schema to a specific MongoDB collection, 
+either by the name you provide or by deriving a name from the model name.
+
+2.Adds Methods: The model is equipped with built-in methods (like find, save, update, delete, etc.) to perform 
+CRUD operations on the collection.
+
+3. Validation and Hooks: The compiled model includes the validation rules and middleware (hooks) defined in the schema.

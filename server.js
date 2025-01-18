@@ -26,8 +26,46 @@ mongoose
     useUnifiedTopology: true,
   })
   .then((con) => {
-    console.log(con.connection);
+    // to see details about connection we can do console
+    // console.log(con.connection);
     console.log('db connection successfull');
+  });
+
+// lets define schema using mongoose:
+// A schema defines how our documents will look like in a collection.
+const tourSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  rating: Number,
+  price: {
+    type: Number,
+    required: true,
+  },
+});
+
+// on the basis of above schema we will create a model
+// Now a model is like a class in oops we can say, whose objects we can create
+const TourModel = mongoose.model('TourModel', tourSchema);
+
+// creating a tour
+// its like creating an object of class
+const testTour = new TourModel({
+  name: 'mountain-tour',
+  rating: 9.5,
+  price: 8000,
+});
+
+// saving the tour returns a promise which we can consume by .then and .catch methods
+testTour
+  .save()
+  .then((doc) => {
+    console.log(doc);
+  })
+  .catch((err) => {
+    console.log(err);
   });
 
 // port No
